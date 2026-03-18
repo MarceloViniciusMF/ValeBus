@@ -12,9 +12,12 @@ import {
 } from 'react-native';
 import { Ionicons, MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-// --- Componente Principal ---
+// Tipagem básica para a navegação
+interface ValeBusProps {
+  navigation: any;
+}
 
-const ValeBusScreen: React.FC = () => {
+const ValeBusScreen: React.FC<ValeBusProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#1a3d1a" />
@@ -52,9 +55,14 @@ const ValeBusScreen: React.FC = () => {
 
         {/* Botões de Ação Rápida */}
         <View style={styles.quickActionsRow}>
-          <QuickAction icon="star" label="Favoritos" />
+          <QuickAction 
+            icon="star" 
+            label="Favoritos" 
+            onPress={() => navigation.navigate('Favoritos')} 
+          />
           <QuickAction icon="location-on" label="Próximos" isMaterial />
-          <QuickAction icon="warning" label="Alertas" />
+          <QuickAction icon="warning" label="Alertas"
+          onPress={() => navigation.navigate('Alertas')} />
         </View>
       </View>
 
@@ -97,8 +105,8 @@ const ValeBusScreen: React.FC = () => {
 
 // --- Sub-componentes ---
 
-const QuickAction = ({ icon, label, isMaterial }: any) => (
-  <TouchableOpacity style={styles.actionBtn}>
+const QuickAction = ({ icon, label, isMaterial, onPress }: any) => (
+  <TouchableOpacity style={styles.actionBtn} onPress={onPress}>
     {isMaterial ? 
       <MaterialIcons name={icon} size={24} color="#a3cc39" /> : 
       <Ionicons name={icon} size={24} color="#a3cc39" />
@@ -122,7 +130,7 @@ const BusLineCard = ({ number, route, time, eta, status, isDelayed }: any) => (
     </View>
     <View style={styles.busEtaContainer}>
       <Text style={styles.etaText}>{eta}</Text>
-      <View style={[styles.statusBadge, isDelayed && { backgroundColor: '#a3cc39' }]}>
+      <View style={[styles.statusBadge, isDelayed && { backgroundColor: '#e67e22' }]}>
         <Text style={styles.statusText}>{status}</Text>
       </View>
     </View>
@@ -165,22 +173,16 @@ const styles = StyleSheet.create({
     paddingBottom: 35,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    elevation: 8,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
   },
   headerTop: {
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 25,
   },
   logoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    flex: 1,
   },
   avatarCircle: {
     backgroundColor: '#a3cc39',
@@ -273,7 +275,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderLeftWidth: 5,
     borderLeftColor: '#a3cc39',
-    // Sombra
     elevation: 3,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -325,7 +326,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   statusBadge: {
-    backgroundColor: '#a3cc39', // No horário
+    backgroundColor: '#a3cc39',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 6,
