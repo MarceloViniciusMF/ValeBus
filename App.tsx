@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
-import ValeBusScreen from './src/screens/home'; 
+import SplashScreen from './src/screens/splash';
+import ValeBusScreen from './src/screens/home';
 
 export default function App() {
-  return (
-    <View style={{ flex: 1 }}>
-      <StatusBar style="light" translucent={true} />
-      <ValeBusScreen />
-    </View>
-  );
+  const [isSplashVisible, setIsSplashVisible] = useState(true);
+
+  if (isSplashVisible) {
+    return <SplashScreen onFinish={() => setIsSplashVisible(false)} />;
+  }
+
+  return <ValeBusScreen />;
 }
